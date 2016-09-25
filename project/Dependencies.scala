@@ -17,19 +17,6 @@ object Dependencies {
   private val scalaTestVersion = "3.0.0"
   private val shapeless = "com.chuusai" %% "shapeless" % "2.3.2"
 
-  val Common = Seq(
-    /** config */
-    "com.typesafe" % "config" % "1.3.0",
-    "com.iheart" %% "ficus" % "1.2.3",
-    /** logging */
-    "org.slf4j" % "slf4j-api" % "1.7.21",
-    "ch.qos.logback" %  "logback-classic" % "1.1.7",
-    /** test */
-    // "org.scalactic" %% "scalactic" % scalaTestVersion,
-    "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
-    /** macro */
-    acyclicPlugin % "provided"
-  )
 
   private val akkaVersion = "2.4.10"
   private val akka = Seq(
@@ -74,6 +61,19 @@ object Dependencies {
     "org.typelevel" %% "cats-free" % catsVersion,
     "org.typelevel" %% "cats-laws" % catsVersion
   )
+  val Common = Seq(
+    /** config */
+    "com.typesafe" % "config" % "1.3.0",
+    "com.iheart" %% "ficus" % "1.2.3",
+    /** logging */
+    "org.slf4j" % "slf4j-api" % "1.7.21",
+    "ch.qos.logback" %  "logback-classic" % "1.1.7",
+    /** test */
+    // "org.scalactic" %% "scalactic" % scalaTestVersion,
+    "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
+    /** macro */
+    acyclicPlugin % "provided"
+  ) ++ akka
 
-  val Proxy = cats ++ akka
+  val Proxy = cats ++ json ++ akka
 }

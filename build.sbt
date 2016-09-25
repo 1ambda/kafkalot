@@ -37,9 +37,6 @@ lazy val noPublishSettings = Seq(
   publishArtifact := false
 )
 
-/** project */
-
-
 /** projects */
 
 lazy val root = Project(s"${codename}", file("."))
