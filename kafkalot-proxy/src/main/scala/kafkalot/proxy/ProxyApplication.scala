@@ -4,8 +4,7 @@ import akka.actor.ActorSystem
 import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Sink
-import kafkalot.common.KafkalotApplication
+import kafkalot.common.{ KafkalotApplication, KafkalotCommonConfigGen }
 import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration.Duration
@@ -41,11 +40,14 @@ class ProxyApplication(val config: ProxyConfig)(
 }
 
 object ProxyApplication extends App {
-  private implicit val system = ActorSystem()
+  val rawCfg = ConfigFactory.load()
+  val commonCfg = KafkalotCommonConfigGen(rawCfg)
+  val proxyCfg = ProxyConfigGen(rawCfg)
+
+  private implicit val system = ActorSystem(commonCfg.akka.clusterSystemName)
   private implicit val mat = ActorMaterializer()
 
-  val config = ProxyConfigGen(ConfigFactory.load())
-  val app = new ProxyApplication(config)
+  val app = new ProxyApplication(proxyCfg)
 
   app.start()
 }

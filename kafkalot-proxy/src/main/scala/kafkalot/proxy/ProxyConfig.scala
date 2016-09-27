@@ -1,12 +1,12 @@
 package kafkalot.proxy
 
 import com.typesafe.config.Config
-import kafkalot.common.{ KafkalotConfigGenerator, KafkalotConfig }
+import kafkalot.common.{ KafkalotConfigGen, KafkalotConfig }
 
 final case class ProxyConfig(app: ProxyAppConfig) extends KafkalotConfig
 final case class ProxyAppConfig(port: Int, host: String)
 
-object ProxyConfigGen extends KafkalotConfigGenerator {
+object ProxyConfigGen extends KafkalotConfigGen {
   import net.ceedubs.ficus.Ficus._
   import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 
