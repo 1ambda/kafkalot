@@ -60,8 +60,24 @@ lazy val common = Project("common", file(s"${codename}-common"))
     , buildInfoOptions += BuildInfoOption.BuildTime
   )
 
-lazy val ui = Project("ui", file(s"${codename}-ui"))
-  .settings(noPublishSettings)
+lazy val proxyUi = Project("proxy-ui", file(s"${codename}-proxy-ui"))
+  .enablePlugins(NpmPlugin)
+  .settings(basicSettings)
+  .settings(
+    unmanagedResourceDirectories in Compile := Seq(baseDirectory.value),
+    includeFilter in (Compile, unmanagedResources) := {
+      val distPath = (baseDirectory.value / "dist").absolutePath
+      new SimpleFileFilter(_.absolutePath startsWith distPath)
+    },
+    targetDirectory in npm := baseDirectory.value,
+    npmTasks in npm := Seq(
+      NpmTask("update"), /** do not re-install if packages exist */
+      NpmTask("run deploy:prod")
+    ),
+    compile <<= (compile in Compile) dependsOn npm
+  )
+  .dependsOn(common)
+
 
 lazy val proxy = Project("proxy", file(s"${codename}-proxy"))
   .settings(basicSettings)
@@ -70,8 +86,5 @@ lazy val proxy = Project("proxy", file(s"${codename}-proxy"))
     , libraryDependencies ++= Dependencies.Proxy
   )
   .dependsOn(common)
+  .dependsOn(proxyUi)
 
-
-
-
-    

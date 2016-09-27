@@ -31,6 +31,7 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-http-experimental" % akkaVersion,
     "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion % "test",
     "de.heikoseeberger" %% "akka-http-circe" % "1.10.0",
+    "ch.megard" %% "akka-http-cors" % "0.1.6",
     "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.7.2",
 
     "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
