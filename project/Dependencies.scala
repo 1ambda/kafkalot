@@ -41,6 +41,9 @@ object Dependencies {
 
     "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
     "com.typesafe.akka" %% "akka-persistence-query-experimental" % akkaVersion,
+    "org.iq80.leveldb"            % "leveldb"          % "0.7",
+    "org.fusesource.leveldbjni"   % "leveldbjni-all"   % "1.8",
+
     "com.typesafe.akka" %% "akka-typed-experimental" % akkaVersion,
 
     "com.typesafe.akka" %% "akka-stream-kafka" % "0.11"

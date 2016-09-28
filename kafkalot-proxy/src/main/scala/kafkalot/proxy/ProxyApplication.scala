@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import kafkalot.common.{ KafkalotApplication, KafkalotCommonConfigGen }
+import kafkalot.common.{ KafkalotApplication, KafkalotCommonConfig }
 import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration.Duration
@@ -22,8 +22,6 @@ class ProxyApplication(val config: ProxyConfig)(
   private var bindingFuture: Future[Http.ServerBinding] = _
 
   override def preStart() = {
-    val serverSource = Http().bind(interface = config.app.host, port = config.app.port)
-
     bindingFuture = Http().bindAndHandle(createHttpHandler, config.app.host, config.app.port)
 
     bindingFuture onComplete {
@@ -41,8 +39,8 @@ class ProxyApplication(val config: ProxyConfig)(
 
 object ProxyApplication extends App {
   val rawCfg = ConfigFactory.load()
-  val commonCfg = KafkalotCommonConfigGen(rawCfg)
-  val proxyCfg = ProxyConfigGen(rawCfg)
+  val commonCfg = KafkalotCommonConfig.fromConfig(rawCfg)
+  val proxyCfg = ProxyConfig.fromConfig(rawCfg)
 
   private implicit val system = ActorSystem(commonCfg.akka.clusterSystemName)
   private implicit val mat = ActorMaterializer()

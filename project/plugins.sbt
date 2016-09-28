@@ -6,7 +6,9 @@ addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-M14")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.8.0")
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.2.0")
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
+addSbtPlugin("com.softwaremill.clippy" % "plugin-sbt" % "0.3.0")
 // addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.0")
+
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
 addSbtPlugin("se.marcuslonnberg" % "sbt-docker" % "1.4.0")
