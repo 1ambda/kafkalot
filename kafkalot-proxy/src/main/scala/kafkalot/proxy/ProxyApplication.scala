@@ -3,6 +3,7 @@ package kafkalot.proxy
 import akka.actor.ActorSystem
 import akka.event.Logging
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import kafkalot.common.{ KafkalotApplication, KafkalotCommonConfig }
 import com.typesafe.config.ConfigFactory
@@ -11,10 +12,10 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, Future }
 import scala.util.{ Failure, Success }
 
-class ProxyApplication(val config: ProxyConfig)(
+class ProxyApplication(protected val config: ProxyConfig, private val route: Route)(
     protected implicit val system: ActorSystem,
     private implicit val mat: ActorMaterializer
-) extends KafkalotApplication with ProxyService {
+) extends KafkalotApplication {
   private implicit val executionContext = system.dispatcher
   protected val logger = Logging(system, getClass)
   override val applicationName: String = "gateway"
@@ -22,7 +23,7 @@ class ProxyApplication(val config: ProxyConfig)(
   private var bindingFuture: Future[Http.ServerBinding] = _
 
   override def preStart() = {
-    bindingFuture = Http().bindAndHandle(createHttpHandler, config.app.host, config.app.port)
+    bindingFuture = Http().bindAndHandle(route, config.app.host, config.app.port)
 
     bindingFuture onComplete {
       case Success(b) =>
@@ -37,7 +38,7 @@ class ProxyApplication(val config: ProxyConfig)(
   }
 }
 
-object ProxyApplication extends App {
+object ProxyApplication extends App with ProxyService {
   val rawCfg = ConfigFactory.load()
   val commonCfg = KafkalotCommonConfig.fromConfig(rawCfg)
   val proxyCfg = ProxyConfig.from(rawCfg)
@@ -45,7 +46,8 @@ object ProxyApplication extends App {
   private implicit val system = ActorSystem(commonCfg.akka.clusterSystemName)
   private implicit val mat = ActorMaterializer()
 
-  val app = new ProxyApplication(proxyCfg)
+  val route = createHttpHandler()
+  val app = new ProxyApplication(proxyCfg, route)
 
   app.start()
 }

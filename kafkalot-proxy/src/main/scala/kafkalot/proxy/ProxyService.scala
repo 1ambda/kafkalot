@@ -47,8 +47,8 @@ trait ProxyService {
 
   def createHttpHandler() = {
     // format: OFF
-    cors() { api } ~
-    assets
+    logRequest("API") { cors() { api } } ~
+    logRequest("ASSET") { assets }
     // format: ON
   }
 }
