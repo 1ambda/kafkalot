@@ -40,7 +40,7 @@ class ProxyApplication(val config: ProxyConfig)(
 object ProxyApplication extends App {
   val rawCfg = ConfigFactory.load()
   val commonCfg = KafkalotCommonConfig.fromConfig(rawCfg)
-  val proxyCfg = ProxyConfig.fromConfig(rawCfg)
+  val proxyCfg = ProxyConfig.from(rawCfg)
 
   private implicit val system = ActorSystem(commonCfg.akka.clusterSystemName)
   private implicit val mat = ActorMaterializer()

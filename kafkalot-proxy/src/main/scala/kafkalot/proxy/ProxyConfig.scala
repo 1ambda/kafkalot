@@ -10,6 +10,6 @@ object ProxyConfig {
   import net.ceedubs.ficus.Ficus._
   import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 
-  def fromConfig(config: Config) =
+  def from(config: Config) =
     config.as[ProxyConfig]("kafkalot.proxy")
 }
