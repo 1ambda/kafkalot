@@ -24,7 +24,7 @@ val basicSettings = Seq(
     "-target:jvm-1.8"
   ),
   autoCompilerPlugins := true,
-  addCompilerPlugin(Dependencies.acyclicPlugin),
+  // addCompilerPlugin(Dependencies.acyclicPlugin),
   addCompilerPlugin(Dependencies.kindProjectorPlugin),
   addCompilerPlugin(Dependencies.macroParadisePlugin),
   resolvers ++= Dependencies.Resolvers,
@@ -85,6 +85,6 @@ lazy val proxy = Project("proxy", file(s"${codename}-proxy"))
     mainClass in Compile := Some(s"${codename}.proxy.ProxyApplication")
     , libraryDependencies ++= Dependencies.Proxy
   )
-  .dependsOn(common)
+  .dependsOn(common % "test->test;cmopile->compile")
   .dependsOn(proxyUi)
 
